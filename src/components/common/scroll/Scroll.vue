@@ -1,6 +1,8 @@
 <template>
-  <div ref="wrapper">
-    <slot></slot>
+  <div class="wrapper" ref="wrapper">
+    <div class="content">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -8,65 +10,47 @@
   import BScroll from 'better-scroll'
 
 	export default {
-		name: "Scroll",
+    name: "Scroll",
     props: {
-		  probeType: {
-		    type: Number,
-        default: 1
-      },
-      data: {
-		    type: Array,
-        default: () => {
-          return []
-        }
+      probeType: {
+        type: Number,
+        default: 1,
       },
       pullUpLoad: {
-		    type: Boolean,
-        default: false
+        type: Boolean,
+        default: false,
       }
     },
+
     data() {
 		  return {
 		    scroll: {}
       }
     },
+
     mounted() {
-		  setTimeout(this.__initScroll, 20)
+      // 创建BScroll对象
+      this.scroll = new BScroll(this.$refs.wrapper,{
+        click: true,
+        // probeType: 3, // 可以根据页面传递过来
+        probeType: this.probeType,
+        pullUpLoad: this.pullUpLoad,
+      })
+
+      // 2、监听滚动对象
+      this.scroll.on('scroll', position => {
+        this.$emit('scroll',position)
+      })
+
+      // 监听上拉事件
+      this.scroll.on('pullingUp',() => {
+        console.log('上拉加载更多')
+        this.$emit('pullUpLoad')
+      })
     },
     methods: {
-		  __initScroll() {
-		    // 1.初始化BScroll对象
-		    if (!this.$refs.wrapper) return
-        this.scroll = new BScroll(this.$refs.wrapper, {
-          probeType: this.probeType,
-          click: true,
-          pullUpLoad: this.pullUpLoad
-        })
-
-        // 2.将监听事件回调
-        this.scroll.on('scroll', pos => {
-          this.$emit('scroll', pos)
-        })
-
-        // 3.监听上拉到底部
-        this.scroll.on('pullingUp', () => {
-          console.log('上拉加载');
-          this.$emit('pullingUp')
-        })
-      },
-      refresh() {
-        this.scroll && this.scroll.refresh && this.scroll.refresh()
-      },
-      finishPullUp() {
-		    this.scroll && this.scroll.finishPullUp && this.scroll.finishPullUp()
-      },
-      scrollTo(x, y, time) {
-		    this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time)
-      }
-    },
-    watch: {
-		  data() {
-        setTimeout(this.refresh, 20)
+      scrollTo(x, y, time=300){
+        this.scroll.scrollTo(x, y, time)
       }
     }
 	}
