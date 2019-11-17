@@ -4,6 +4,7 @@ import home from 'views/home/home'
 import cart from 'views/cart/cart'
 import category from 'views/category/category'
 import profile from 'views/profile/profile'
+import detail from 'views/detail/Detail'
 
 
 // 1、安装router
@@ -31,6 +32,10 @@ const routes = [
   {
     path: '/profile',
     component: profile,
+  },
+  {
+    path: '/detail',
+    component: detail,
   },
 ]
 const router = new VueRouter({
