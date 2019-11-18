@@ -1,10 +1,10 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsitem.show.img" alt="" @load="imageLoad">
+    <img :src="getImg" alt="" @load="imageLoad">
     <div class="goods-info">
-      <p>{{goodsitem.title}}</p>
-      <sapn class="price">{{goodsitem.price}}</sapn>
-      <span class="collect">{{goodsitem.cfav}}</span>
+      <p>{{goodsItem.title}}</p>
+      <span class="price">{{goodsItem.price}}</span>
+      <span class="collect">{{goodsItem.cfav}}</span>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 export default {
   name: 'GoodsListItem',
   props: {
-    goodsitem: {
+    goodsItem: {
       type: Object,
       default() {
         return {}
@@ -25,12 +25,27 @@ export default {
     imageLoad() {
       this.$bus.$emit('itemImageLoad')
     },
+
     itemClick() {
-      this.$router.push('/detail' + this.goodsitem.iid)
+      // console.log(this.goodsItem.iid)
+      // this.$router.push('/detail/' + this.goodsItem.iid)
+      // console.log(this.$router.params.id)
+      this.$router.push({
+        path: '/detail',
+        query: {
+          iid: this.goodsItem.iid
+        }
+      })
     }
-  }
+  },
+  computed: {
+      getImg() {
+        return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
+      }
+    }
 }
 </script>
+
 
 <style scoped>
   .goods-item {
@@ -39,7 +54,7 @@ export default {
 
     width: 48%;
   }
-  .goods img {
+  .goods-item img {
     width: 100%;
   }
 

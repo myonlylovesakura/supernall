@@ -13,8 +13,9 @@ export default {
   components: {
     Swiper, SwiperItem
   },
+
   props: {
-    toImages: {
+    topImages: {
       type: Array,
       default() {
         return []
@@ -25,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-.swiper-detail {
+.detail-swiper {
   height: 300px;
   overflow: hidden;
 }

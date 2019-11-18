@@ -3,11 +3,21 @@
     <div slot="left" class="back" @click="backClick">
       <img src="~assets/img/common/back.svg">
     </div>
-    <div slot="center" class="title">
+    <!-- <div slot="center" class="title">
       <div v-for="{item,index} in titles" 
            class="title-item"
-           :class="{active: currentIndex === index}"
-           @click="itemClick(index)">{{item}}</div>
+           :class="{'active': currentIndex === index}"
+           @click="itemClick(index)">
+      {{item}}
+      </div>
+    </div> -->
+
+    <div class="title" slot="center">
+      <div class="title-item"
+            v-for="(item, index) in titles" :key="index"
+            :class="{'active': index===currentIndex}" @click="itemClick(index)">
+        {{item}}
+      </div>
     </div>
   </nav-bar>
 </template>
@@ -16,7 +26,7 @@
 import NavBar from 'components/common/navbar/navBar'
 
 export default {
-  name: 'DetailNavBra',
+  name: 'DetailNavBar',
   components: {
     NavBar
   },
@@ -47,7 +57,7 @@ export default {
   flex: 1;
 }
 
-.active {
+.title-item .active {
   color: var(--color-high-text);
 }
 

@@ -6,7 +6,11 @@
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-goods-info :detail-info="detailInfo"></detail-goods-info>
+      <detail-params-info  :param-info="itemParams"></detail-params-info>
+      <detail-comment-info :comment-info="commentInfo"></detail-comment-info>
+      <detail-recommend-info ref="recommend" :recommend-list="recommendList"></detail-recommend-info>
     </scroll>
+    <detail-bottom-bar></detail-bottom-bar>
   </div>
 </template>
 <script>
@@ -15,9 +19,17 @@ import DetailSwiper from './childComps/DetaliSwiper'
 import DetailBaseInfo from './childComps/DetailBaseInfo'
 import DetailShopInfo from './childComps/DetailShopInfo'
 import DetailGoodsInfo from './childComps/DetailGoodsInfo'
-import {getDetail} from 'network/detail'
+import DetailParamsInfo from './childComps/DetailParamsInfo'
+import DetailCommentInfo from './childComps/DetailCommentInfo'
+import DetailRecommendInfo from './childComps/DetailRecommendInfo'
+import DetailBottomBar from './childComps/DetailBottomBar'
+
+import {getDetail,Goods,Shop,getRecommend} from 'network/detail'
+
 
 import Scroll from 'components/common/scroll/Scroll'
+import BackTop from 'components/content/backTop/BackTop'
+
 export default {
   name: 'Detail',
   components: {
@@ -26,7 +38,12 @@ export default {
     DetailBaseInfo,
     DetailShopInfo,
     DetailGoodsInfo,
+    DetailParamsInfo,
+    DetailCommentInfo,
+    DetailRecommendInfo,
+    DetailBottomBar,
     Scroll,
+    BackTop,
   },
   data() {
     return {
@@ -35,11 +52,14 @@ export default {
       goods: {},
       shop: {},
       detailInfo: {},
+      itemParams: {},
+      commentInfo: {},
+      recommendList: [],
     }
   },
   created() {
     // 保存传入的iid
-    this.iid = this.$router.params.id
+    this.iid = this.$route.query.iid
 
     // 请求数据
     getDetail(this.iid).then(res => {
@@ -56,6 +76,19 @@ export default {
 
       // 详情信息
       this.detailInfo = data.detailInfo
+
+      // 商品参数
+      this.itemParams = data.itemParams
+
+      // 评论信息
+      if (data.rate.list) {
+        this.commentInfo = data.rate.list[0];
+      }
+    });
+
+    getRecommend().then((res, error) => {
+      if (error) return
+      this.recommendList = res.data.list
     })
   }
 }
@@ -65,15 +98,24 @@ export default {
 #detail {
   position: relative;
   z-index: 9;
-  background-color: aliceblue;
+  background-color: #fff;
   height: 100vh;
 }
 .detail-nav {
   position: relative;
   z-index: 9;
-  background-color: aliceblue;
+  background-color: #fff;
 }
-.conent {
-  height: calc(100vh - 44px);
+
+.content {
+  position: absolute;
+  height: calc(100vh - 104px);
+  overflow: hidden;
 }
+
+.back-top {
+    position: fixed;
+    right: 10px;
+    bottom: 65px;
+  }
 </style>

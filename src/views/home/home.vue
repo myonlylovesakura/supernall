@@ -12,7 +12,7 @@
             @scroll="contentScroll"
             @pullUpLoad="loadMore"
             :pullUpLoad="true">
-      <home-swiper :banners="banners" @swpierImageLoad.once="swpierImageLoad"></home-swiper>
+      <home-swiper :banners="banners" @swpierImageLoad="swpierImageLoad"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
       <tab-control :titles="['流行','新款','精选']"
@@ -21,77 +21,7 @@
                    ref="tabControl2">
       </tab-control>
       <goods-list :goods="showGoods"></goods-list>
-   <ul>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-      <li>wwwwwwwwwwwwwww</li>
-  </ul>
+
     </scroll>
     <back-top @click.native="backClick" v-show="isShow"></back-top>
 
@@ -176,7 +106,7 @@ export default {
         if(timer) clearTimeout(timer)
 
         timer = setTimeout(() => {
-          func.apply(this,args)
+          func.apply(this)
         },delay)
       }
     },
@@ -234,6 +164,8 @@ export default {
       getHomeGoods(type,page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1;
+
+        this.$refs.scroll.finishPullUp()
       })
     }
   },
