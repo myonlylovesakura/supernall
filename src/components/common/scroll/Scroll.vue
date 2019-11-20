@@ -44,13 +44,13 @@
 
       // 监听上拉事件
       this.scroll.on('pullingUp',() => {
-        console.log('上拉加载更多')
+        // console.log('上拉加载更多')
         this.$emit('pullUpLoad')
       })
     },
     methods: {
       scrollTo(x, y, time=300){
-        this.scroll && this.scroll.scrollTo(x, y, time)
+        this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time)
       },
       finishPullUp() {
         this.scroll && this.scroll.finishPullUp()

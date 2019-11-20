@@ -44,6 +44,7 @@ import {
        } from 'network/home'
 
 import Scroll from 'components/common/scroll/Scroll'
+import {debounce} from '../../common/utils'
 
 export default {
   name: 'home',
@@ -89,7 +90,9 @@ export default {
   },
   mounted() {
     // 监听item图片加载完成
-    const refresh = this.debounce(this.$refs.scroll.refresh,500)
+    const refresh = debounce(this.$refs.scroll.refresh,500)
+    // console.log(this.$refs.scroll)
+    console.log('1111111')
     this.$bus.$on('itemImageLoad',() => {
       refresh()
     })
@@ -100,7 +103,7 @@ export default {
   },
   methods: {
     // 防抖函数
-    debounce(func,delay) {
+    /* debounce(func,delay) {
       let timer = null
       return function() {
         if(timer) clearTimeout(timer)
@@ -109,7 +112,7 @@ export default {
           func.apply(this)
         },delay)
       }
-    },
+    }, */
     /* 事件监听 */
     tabClick(index) {
       switch (index) {
@@ -141,7 +144,7 @@ export default {
 
     // 加载更多
     loadMore(){
-      console.log('loadmore')
+      // console.log('loadmore')
       this.getHomeGoods(this.currentType)
     },
 
@@ -183,7 +186,8 @@ export default {
   #home {
     margin-top: 44px;
     height: 100vh;
-    /* position: relative; */
+    position: relative;
+    overflow: hidden;
   }
   .home-nav {
     background-color: var(--color-tint);
@@ -203,7 +207,8 @@ export default {
     top: 44px; */
   }
   .content {
-    height: calc(100% - 93px);
+    position: absolute;
+    height: calc(100vh - 93px);
     overflow: hidden;
   }
 </style>
