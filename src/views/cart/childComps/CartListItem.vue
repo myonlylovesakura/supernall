@@ -31,7 +31,7 @@
     methods: {
       checkedChange: function () {
         this.itemInfo.checked = !this.itemInfo.checked;
-        console.log(this.itemInfo)
+        // console.log(this.itemInfo)
       }
     }
   }

@@ -1,3 +1,5 @@
+/* import { resolve } from "dns";
+
 const mutations = {
   addCart(state, info) {
     console.log(info);
@@ -15,5 +17,15 @@ const mutations = {
   }
 }
 
-export default mutations
+export default mutations */
+
+export default {
+  add_counter(state,oldInfo) {
+    oldInfo.count++
+  },
+  add_to_cart(state,info) {
+    info.checked = true
+    state.cartList.push(info)
+  }
+}
 

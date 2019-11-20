@@ -18,6 +18,7 @@
     <back-top v-show="showBackTop" @click.native="backTop" class="back-top">
       <img src="~assets/img/common/top.png" alt="">
     </back-top>
+    <!-- <toast :message="message" :isShow="isShow"></toast> -->
   </div>
 </template>
 <script>
@@ -38,8 +39,9 @@ import Scroll from 'components/common/scroll/Scroll'
 import BackTop from 'components/content/backTop/BackTop'
 
 import {itemListenerMixin,backTopMixin} from '../../common/mixin'
-
 import {debounce} from '../../common/utils'
+
+import {mapActions} from 'vuex'
 
 export default {
   name: 'Detail',
@@ -70,10 +72,10 @@ export default {
       themeTopYs: [],
     }
   },
-  updated() {
-      // 获取需要的四个offsetTop
-      debounce(this._getOffsetTops(),500)
-  },
+  // updated() {
+  //     // 获取需要的四个offsetTop
+  //     this._getOffsetTops()
+  // },
   created() {
     // 保存传入的iid
     this.iid = this.$route.query.iid
@@ -81,7 +83,6 @@ export default {
     // 请求数据
     getDetail(this.iid).then(res => {
       // 1、顶部轮播数据
-      // console.log(res)
       const data = res.result
       this.topImages = data.itemInfo.topImages 
 
@@ -110,6 +111,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['addToCart']),
     _getOffsetTops() {
 		    this.themeTops = []
         this.themeTops.push(this.$refs.base.$el.offsetTop)
@@ -119,9 +121,9 @@ export default {
         this.themeTops.push(Number.MAX_VALUE)
       },
     detailImageLoad() {
-      this.newRefresh()
-
-      // this._getOffsetTops()
+      debounce(this.$refs.scroll.refresh,500)
+      this._getOffsetTops()
+      // this.newRefresh()
     },
     contentScroll(position) {
 		  // 1.监听backTop的显示
@@ -156,7 +158,6 @@ export default {
         }
     },
     titleClick(index) {
-      // console.log(this.themeTops[index]);
       this.$refs.scroll.scrollTo(0, -this.themeTops[index], 100) 
     },
     addCart() {
@@ -169,8 +170,16 @@ export default {
       product.iid = this.goods.iid
 
       // 2、将我们的商品添加到购物车
-      this.$store.commit('addCart',product)
-      // this.$store.dispatch('addCart',product)
+      /* this.$store.commit('addCart',product).then(res => {
+        console.log(res)
+      }) */
+      /* this.$store.dispatch('addCart',product).then(res => {
+        console.log(res)
+      }) */
+
+      this.addToCart(product).then(res => {
+        this.$toast.show(res,1500)
+      })
     }
   }
 }

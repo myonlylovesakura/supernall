@@ -92,7 +92,7 @@ export default {
     // 监听item图片加载完成
     const refresh = debounce(this.$refs.scroll.refresh,500)
     // console.log(this.$refs.scroll)
-    console.log('1111111')
+    // console.log('1111111')
     this.$bus.$on('itemImageLoad',() => {
       refresh()
     })
@@ -184,10 +184,8 @@ export default {
 
 <style scoped>
   #home {
-    margin-top: 44px;
+    padding-top: 44px;
     height: 100vh;
-    position: relative;
-    overflow: hidden;
   }
   .home-nav {
     background-color: var(--color-tint);
@@ -202,9 +200,6 @@ export default {
   .tab-control {
     position: relative;
     z-index: 9;
-    /* z-index: 9;
-    position: sticky;
-    top: 44px; */
   }
   .content {
     position: absolute;
