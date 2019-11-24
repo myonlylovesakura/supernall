@@ -22,7 +22,7 @@
       },
       itemSpace: {
 		    type: Number,
-        default: 8
+        default: 2
       },
       lineSpace: {
 		    type: Number,
@@ -52,7 +52,8 @@
           let item = children[i];
           item.style.width = itemWidth + 'px';
           if ((i+1) % this.cols !== 0) {
-            item.style.marginRight = this.itemSpace + 'px'
+            // item.style.marginRight = this.itemSpace + 'px'
+            item.style.marginRight = 0
           }
           if (i >= this.cols) {
             item.style.marginTop = this.lineSpace + 'px'
